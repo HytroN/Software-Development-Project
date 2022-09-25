@@ -1,11 +1,13 @@
-import java.util.Vector;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        System.out.println("Loading all vessels!");
         Vessels k = new Vessels();
+        RoRo b = new RoRo();
 
-        k.Vessel("Denmark", "Roro", 10, 200, 10);
+        b.loadingCargo(10, 5);
+
+        k.Vessel("Denmark", Tankers.class.getName(), 10, 200, 10);
     }
 }
 
@@ -26,11 +28,26 @@ class Vessels {
 }
 
 class RoRo extends Vessels {
-    int carsLength;
-    int truckLength;
+    int carLength = 8;
+    int truckLength = 30;
+    int amountCars, amountTrucks, fraction;
 
-    void loadingCargo() {
+    public boolean checkCargo() {
+        return carLength + truckLength <= length;
+    }
 
+    public boolean checkFraction() {
+        return true;
+    }
+
+    public int loadingCargo(int amountCars, int amountTrucks) {
+        this.amountCars = amountCars * carLength;
+        this.amountTrucks = amountTrucks * truckLength;
+
+        System.out.println(
+                "The length of all cars: " + this.amountCars + " | The length of all trucks: " + this.amountTrucks);
+
+        return this.amountCars;
     }
 
     void utilityLevelOfCapacity() {
@@ -41,8 +58,8 @@ class RoRo extends Vessels {
 class Tankers extends Vessels {
     int compartments;
 
-    public Tankers(String flagNation, int draft, int length, int width) {
-
+    public Tankers(String flagNation, String vesselType, int draft, int length, int width) {
+        // super(flagNation, Tankers.class.getClass(), draft, length, width);
     }
 
     void loadingCargo() {
