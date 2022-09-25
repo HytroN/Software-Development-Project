@@ -47,11 +47,11 @@ class RoRo extends Vessels {
         System.out.println(
                 "The length of all cars: " + this.amountCars + " | The length of all trucks: " + this.amountTrucks);
 
-        return this.amountCars;
+        return amountCars;
     }
 
-    void utilityLevelOfCapacity() {
-
+    public int utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
+        return fraction;
     }
 }
 
