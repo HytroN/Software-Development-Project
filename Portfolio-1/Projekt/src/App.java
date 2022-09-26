@@ -8,8 +8,6 @@ public class App {
 
         b.loadingCargo(10, 5);
         System.out.println(b.checkLoad());
-
-        b.loadingCargo(10, 5);
     }
 }
 
@@ -29,7 +27,8 @@ class Vessels {
 class RoRo extends Vessels {
     int carLength = 8;
     int truckLength = 30;
-    int amountCars, amountTrucks, fraction;
+    int amountCars, amountTrucks;
+    double fraction;
 
     public RoRo(String flagNation, int draft, int length, int width) {
         super.flagNation = flagNation;
@@ -45,10 +44,6 @@ class RoRo extends Vessels {
                 + " | length: " + length + " | width: " + width;
     }
 
-    public int checkFraction() {
-        return fraction;
-    }
-
     public String checkLoad() {
         return "Amount of cars: " + amountCars + " | Amount of trucks: " + amountTrucks;
     }
@@ -58,13 +53,15 @@ class RoRo extends Vessels {
         this.amountTrucks = amountTrucks;
     }
 
-    public int utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
+    public double utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
+        // this.fraction =
         return fraction;
     }
 }
 
 class Tankers extends Vessels {
     int compartments;
+    double fraction;
 
     public Tankers(String flagNation, int draft, int length, int width) {
         super.flagNation = flagNation;
@@ -72,20 +69,21 @@ class Tankers extends Vessels {
         super.draft = draft;
         super.length = length;
         super.width = width;
-        // super(flagNation, Tankers.class.getClass(), draft, length, width);
     }
 
     void loadingCargo() {
 
     }
 
-    void utilityLevelOfCapacity() {
-
+    public double utilityLevelOfCapacity() {
+        // this.fraction =
+        return fraction;
     }
 }
 
 class Containers extends Vessels {
     int amountOfContainers;
+    double fraction;
 
     public Containers(String flagNation, int draft, int length, int width) {
         super.flagNation = flagNation;
@@ -99,7 +97,8 @@ class Containers extends Vessels {
 
     }
 
-    void utilityLevelOfCapacity() {
-
+    double utilityLevelOfCapacity() {
+        // this.fraction =
+        return fraction;
     }
 }
