@@ -2,12 +2,14 @@
 public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("Loading all vessels!");
-        Vessels k = new Vessels();
-        RoRo b = new RoRo();
+        RoRo b = new RoRo("DK", 10, 100, 20);
+
+        System.out.println(b.checkCargo());
 
         b.loadingCargo(10, 5);
+        System.out.println(b.checkLoad());
 
-        k.Vessel("Denmark", Tankers.class.getName(), 10, 200, 10);
+        b.loadingCargo(10, 5);
     }
 }
 
@@ -21,9 +23,6 @@ class Vessels {
         this.draft = draft;
         this.length = length;
         this.width = width;
-
-        System.out.println("Flagnation: " + flagNation + " | Vessel Type: " + vesselType + " | draft: " + draft
-                + " | length: " + length + " | width: " + width);
     }
 }
 
@@ -32,22 +31,31 @@ class RoRo extends Vessels {
     int truckLength = 30;
     int amountCars, amountTrucks, fraction;
 
-    public boolean checkCargo() {
-        return carLength + truckLength <= length;
+    public RoRo(String flagNation, int draft, int length, int width) {
+        super.flagNation = flagNation;
+        super.vesselType = RoRo.class.getName();
+        super.draft = draft;
+        super.length = length;
+        super.width = width;
+        // super(flagNation, Tankers.class.getClass(), draft, length, width);
     }
 
-    public boolean checkFraction() {
-        return true;
+    public String checkCargo() {
+        return "Flag Nation: " + flagNation + " | Vessel Type: " + vesselType + " | draft: " + draft
+                + " | length: " + length + " | width: " + width;
     }
 
-    public int loadingCargo(int amountCars, int amountTrucks) {
-        this.amountCars = amountCars * carLength;
-        this.amountTrucks = amountTrucks * truckLength;
+    public int checkFraction() {
+        return fraction;
+    }
 
-        System.out.println(
-                "The length of all cars: " + this.amountCars + " | The length of all trucks: " + this.amountTrucks);
+    public String checkLoad() {
+        return "Amount of cars: " + amountCars + " | Amount of trucks: " + amountTrucks;
+    }
 
-        return amountCars;
+    public void loadingCargo(int amountCars, int amountTrucks) {
+        this.amountCars = amountCars;
+        this.amountTrucks = amountTrucks;
     }
 
     public int utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
@@ -58,7 +66,12 @@ class RoRo extends Vessels {
 class Tankers extends Vessels {
     int compartments;
 
-    public Tankers(String flagNation, String vesselType, int draft, int length, int width) {
+    public Tankers(String flagNation, int draft, int length, int width) {
+        super.flagNation = flagNation;
+        super.vesselType = Tankers.class.getName();
+        super.draft = draft;
+        super.length = length;
+        super.width = width;
         // super(flagNation, Tankers.class.getClass(), draft, length, width);
     }
 
@@ -75,7 +88,11 @@ class Containers extends Vessels {
     int amountOfContainers;
 
     public Containers(String flagNation, int draft, int length, int width) {
-
+        super.flagNation = flagNation;
+        super.vesselType = Containers.class.getName();
+        super.draft = draft;
+        super.length = length;
+        super.width = width;
     }
 
     void loadingCargo() {
