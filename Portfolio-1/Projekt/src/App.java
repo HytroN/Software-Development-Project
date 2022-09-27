@@ -1,26 +1,36 @@
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Loading all vessels!");
-        RoRo b = new RoRo("DK", 10, 100, 20);
+        // RoRo b = new RoRo("DK", 10, 100, 20);
+        // System.out.println(b.checkCargo());
+        // b.loadingCargo(10, 5);
+        // System.out.println(b.checkLoad());
+        // System.out.println(b.utilityLevelOfCapacity());
 
-        System.out.println(b.checkCargo());
+        Containers k = new Containers("DE", 10, 200, 30, 10);
+        System.err.println(k.checkCargo());
+        // System.out.println(k.amountOfContainers);
+        k.loadingCargo(2);
+        // System.out.println(k.amountOfContainers);
+        System.out.println(k.utilityLevelOfCapacity());
+        // System.out.println(k.checkLoad());
 
-        b.loadingCargo(10, 5);
-        System.out.println(b.checkLoad());
+        // Tankers c = new Tankers("DE", 10, 200, 30, 10, 5);
+        // System.out.println(c.checkCargo());
     }
 }
 
 class Vessels {
     String vesselType, flagNation;
-    int draft, length, width;
+    int draft, length, width, cargo;
 
-    public void Vessel(String flagNation, String vesselType, int draft, int length, int width) {
+    public void Vessel(String flagNation, String vesselType, int draft, int length, int width, int cargo) {
         this.flagNation = flagNation;
         this.vesselType = vesselType;
         this.draft = draft;
         this.length = length;
         this.width = width;
+        this.cargo = cargo;
     }
 }
 
@@ -63,16 +73,28 @@ class Tankers extends Vessels {
     int compartments;
     double fraction;
 
-    public Tankers(String flagNation, int draft, int length, int width) {
+    public Tankers(String flagNation, int draft, int length, int width, int cargo, int compartments) {
         super.flagNation = flagNation;
         super.vesselType = Tankers.class.getName();
         super.draft = draft;
         super.length = length;
         super.width = width;
+        super.cargo = cargo;
+        this.compartments = compartments;
+    }
+
+    public String checkCargo() {
+        return "Flag Nation: " + flagNation + " | Vessel Type: " + vesselType + " | draft: " + draft
+                + " | length: " + length + " | width: " + width + " | Cargo: " + cargo + " | Amount of compartments: "
+                + compartments;
     }
 
     void loadingCargo() {
+        if (fraction < 100.0) {
 
+        } else {
+            System.out.println("There is no more space!");
+        }
     }
 
     public double utilityLevelOfCapacity() {
@@ -83,22 +105,35 @@ class Tankers extends Vessels {
 
 class Containers extends Vessels {
     int amountOfContainers;
-    double fraction;
+    double fraction = 100.0;
 
-    public Containers(String flagNation, int draft, int length, int width) {
+    public Containers(String flagNation, int draft, int length, int width, int cargo) {
         super.flagNation = flagNation;
         super.vesselType = Containers.class.getName();
         super.draft = draft;
         super.length = length;
         super.width = width;
+        super.cargo = cargo;
     }
 
-    void loadingCargo() {
-
+    public int checkLoad() {
+        return amountOfContainers;
     }
 
-    double utilityLevelOfCapacity() {
-        // this.fraction =
-        return fraction;
+    public String checkCargo() {
+        return "Flag Nation: " + flagNation + " | Vessel Type: " + vesselType + " | draft: " + draft
+                + " | length: " + length + " | width: " + width + " | Cargo: " + cargo;
+    }
+
+    void loadingCargo(int amountOfContainers) {
+        if (cargo >= amountOfContainers) {
+            this.amountOfContainers = amountOfContainers;
+        } else {
+            System.out.println("There is no more space!");
+        }
+    }
+
+    float utilityLevelOfCapacity() {
+        return 5 / 10 * 100;
     }
 }
