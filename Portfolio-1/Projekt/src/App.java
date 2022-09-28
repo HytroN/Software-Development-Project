@@ -1,18 +1,17 @@
-
 public class App {
     public static void main(String[] args) throws Exception {
-        // RoRo b = new RoRo("DK", 10, 100, 20);
-        // System.out.println(b.checkCargo());
-        // b.loadingCargo(10, 5);
-        // System.out.println(b.checkLoad());
-        // System.out.println(b.utilityLevelOfCapacity());
+        RoRo b = new RoRo("DK", 10, 400, 20);
+        System.out.println(b.checkCargo());
+        b.loadingCargo(10, 5);
+        System.out.println(b.checkLoad());
+        System.out.println(b.utilityLevelOfCapacity());
 
-        Containers k = new Containers("DE", 10, 200, 30, 10);
-        System.err.println(k.checkCargo());
+        // Containers k = new Containers("DE", 10, 200, 30, 10);
+        // System.err.println(k.checkCargo());
         // System.out.println(k.amountOfContainers);
-        k.loadingCargo(2);
+        // k.loadingCargo(10);
         // System.out.println(k.amountOfContainers);
-        System.out.println(k.utilityLevelOfCapacity());
+        // System.out.println(k.utilityLevelOfCapacity());
         // System.out.println(k.checkLoad());
 
         // Tankers c = new Tankers("DE", 10, 200, 30, 10, 5);
@@ -37,7 +36,7 @@ class Vessels {
 class RoRo extends Vessels {
     int carLength = 8;
     int truckLength = 30;
-    int amountCars, amountTrucks;
+    int totalCarsLength, totalTruckLength;
     double fraction;
 
     public RoRo(String flagNation, int draft, int length, int width) {
@@ -55,17 +54,22 @@ class RoRo extends Vessels {
     }
 
     public String checkLoad() {
-        return "Amount of cars: " + amountCars + " | Amount of trucks: " + amountTrucks;
+        return "Amount of cars: " + totalCarsLength + " | Amount of trucks: " + totalTruckLength;
     }
 
-    public void loadingCargo(int amountCars, int amountTrucks) {
-        this.amountCars = amountCars;
-        this.amountTrucks = amountTrucks;
+    public void loadingCargo(int totalCarsLength, int totalTruckLength) {
+        if (length > ((totalCarsLength * carLength) + (totalTruckLength * truckLength))) {
+            this.totalCarsLength = totalCarsLength * carLength;
+            this.totalTruckLength = totalTruckLength * truckLength;
+        } else {
+            System.out.println("There is not space for that!");
+        }
     }
 
-    public double utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
-        // this.fraction =
-        return fraction;
+    public String utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
+        float length2 = length;
+        this.fraction = ((this.totalCarsLength + this.totalTruckLength) / length2) * 100.0;
+        return "Amount of space that are filled: " + fraction;
     }
 }
 
@@ -93,7 +97,7 @@ class Tankers extends Vessels {
         if (fraction < 100.0) {
 
         } else {
-            System.out.println("There is no more space!");
+            System.out.println("There is not space for that!");
         }
     }
 
@@ -105,7 +109,7 @@ class Tankers extends Vessels {
 
 class Containers extends Vessels {
     int amountOfContainers;
-    double fraction = 100.0;
+    double fraction;
 
     public Containers(String flagNation, int draft, int length, int width, int cargo) {
         super.flagNation = flagNation;
@@ -133,7 +137,9 @@ class Containers extends Vessels {
         }
     }
 
-    float utilityLevelOfCapacity() {
-        return 5 / 10 * 100;
+    String utilityLevelOfCapacity() {
+        float amountOfContainers = this.amountOfContainers;
+        this.fraction = (amountOfContainers / cargo) * 100.0;
+        return "Amount of space that are filled: " + fraction;
     }
 }
