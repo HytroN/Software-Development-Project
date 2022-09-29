@@ -1,11 +1,21 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        RoRo b = new RoRo("DK", 10, 400, 20);
+        System.out.println(" ");
+        System.out.println("############################################");
+        System.out.println("#################  RoRo  ###################");
+        System.out.println("############################################");
+        System.out.println(" ");
+        RoRo b = new RoRo("DK", 10, 220, 20);
         System.out.println(b.checkCargo());
         b.loadingCargo(10, 5);
         System.out.println(b.checkLoad());
         System.out.println(b.utilityLevelOfCapacity());
 
+        // System.out.println(" ");
+        // System.out.println("############################################");
+        // System.out.println("################ Containers ################");
+        // System.out.println("############################################");
+        // System.out.println(" ");
         // Containers k = new Containers("DE", 10, 200, 30, 10);
         // System.err.println(k.checkCargo());
         // System.out.println(k.amountOfContainers);
@@ -14,8 +24,17 @@ public class App {
         // System.out.println(k.utilityLevelOfCapacity());
         // System.out.println(k.checkLoad());
 
+        // System.out.println(" ");
+        // System.out.println("############################################");
+        // System.out.println("################# Tankers ################");
+        // System.out.println("############################################");
+        // System.out.println(" ");
+
         // Tankers c = new Tankers("DE", 10, 200, 30, 10, 5);
         // System.out.println(c.checkCargo());
+        // c.loadingCargo(50);
+        // System.out.println(c.checkLoad());
+        // System.out.println(c.utilityLevelOfCapacity());
     }
 }
 
@@ -54,11 +73,11 @@ class RoRo extends Vessels {
     }
 
     public String checkLoad() {
-        return "Amount of cars: " + totalCarsLength + " | Amount of trucks: " + totalTruckLength;
+        return (totalCarsLength + totalTruckLength) + "/" + length;
     }
 
     public void loadingCargo(int totalCarsLength, int totalTruckLength) {
-        if (length > ((totalCarsLength * carLength) + (totalTruckLength * truckLength))) {
+        if ((totalCarsLength * carLength) + (totalTruckLength * truckLength) <= length) {
             this.totalCarsLength = totalCarsLength * carLength;
             this.totalTruckLength = totalTruckLength * truckLength;
         } else {
@@ -66,15 +85,15 @@ class RoRo extends Vessels {
         }
     }
 
-    public String utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
+    public double utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
         float length2 = length;
         this.fraction = ((this.totalCarsLength + this.totalTruckLength) / length2) * 100.0;
-        return "Amount of space that are filled: " + fraction;
+        return fraction;
     }
 }
 
 class Tankers extends Vessels {
-    int compartments;
+    int compartments, loadCargo;
     double fraction;
 
     public Tankers(String flagNation, int draft, int length, int width, int cargo, int compartments) {
@@ -93,16 +112,21 @@ class Tankers extends Vessels {
                 + compartments;
     }
 
-    void loadingCargo() {
-        if (fraction < 100.0) {
+    public String checkLoad() {
+        return "Loaded Cargo: " + loadCargo + "/" + (cargo * compartments);
+    }
 
+    void loadingCargo(int loadCargo) {
+        if (utilityLevelOfCapacity() < 100.0 && loadCargo <= (cargo * compartments)) {
+            this.loadCargo = loadCargo;
         } else {
             System.out.println("There is not space for that!");
         }
     }
 
     public double utilityLevelOfCapacity() {
-        // this.fraction =
+        float loadCargo = this.loadCargo;
+        this.fraction = (loadCargo / (cargo * compartments)) * 100.0;
         return fraction;
     }
 }
@@ -120,8 +144,8 @@ class Containers extends Vessels {
         super.cargo = cargo;
     }
 
-    public int checkLoad() {
-        return amountOfContainers;
+    public String checkLoad() {
+        return amountOfContainers + "/" + cargo;
     }
 
     public String checkCargo() {
