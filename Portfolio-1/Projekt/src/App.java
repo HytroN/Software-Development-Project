@@ -86,7 +86,7 @@ class RoRo extends Vessels {
     }
 
     public double utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
-        float length2 = length;
+        double length2 = length;
         this.fraction = ((this.totalCarsLength + this.totalTruckLength) / length2) * 100.0;
         return fraction;
     }
@@ -125,7 +125,7 @@ class Tankers extends Vessels {
     }
 
     public double utilityLevelOfCapacity() {
-        float loadCargo = this.loadCargo;
+        double loadCargo = this.loadCargo;
         this.fraction = (loadCargo / (cargo * compartments)) * 100.0;
         return fraction;
     }
@@ -162,7 +162,7 @@ class Containers extends Vessels {
     }
 
     String utilityLevelOfCapacity() {
-        float amountOfContainers = this.amountOfContainers;
+        double amountOfContainers = this.amountOfContainers;
         this.fraction = (amountOfContainers / cargo) * 100.0;
         return "Amount of space that are filled: " + fraction;
     }
