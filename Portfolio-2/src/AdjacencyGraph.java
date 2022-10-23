@@ -39,6 +39,11 @@ public class AdjacencyGraph {
         }
     }
 
+    public void Distance() { // En algoritmer der udregner den korteste distance mellem alle vertex vi har
+                             // lavet i main
+
+    }
+
 }
 
 class Vertex {

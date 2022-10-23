@@ -1,10 +1,11 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        mkgraph1();
+        AdjacencyGraph adj = Graph();
+        adj.PrintGraph();
 
     }
 
-    public static AdjacencyGraph mkgraph1() {
+    public static AdjacencyGraph Graph() {
         AdjacencyGraph newG = new AdjacencyGraph();
         Vertex a = new Vertex("Jawaharlal Nehru");
         Vertex b = new Vertex("Tanjung Pelepas");
@@ -40,8 +41,6 @@ public class App {
         // Tilføjer edges - Mombasa
         newG.addEdge(d, f, 2000); // +2000 (Salalah)
         newG.addEdge(d, g, 500); // +500 (Jebel Ali Dubai)
-
-        newG.PrintGraph();
 
         return newG;
     }
