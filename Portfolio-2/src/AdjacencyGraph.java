@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class AdjacencyGraph {
     ArrayList<Vertex> Vertices;
@@ -37,11 +37,6 @@ public class AdjacencyGraph {
                 System.out.println(e.to.name + " with weight: " + e.weight);
             }
         }
-    }
-
-    public void Distance() { // En algoritmer der udregner den korteste distance mellem alle vertex vi har
-                             // lavet i main
-
     }
 
 }
