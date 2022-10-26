@@ -8,7 +8,6 @@ public class App {
         System.out.println();
         adj.printSurplus();
         System.out.println();
-        adj.printReverseFlow();
     }
 
     public static AdjacencyGraph Graph() {
