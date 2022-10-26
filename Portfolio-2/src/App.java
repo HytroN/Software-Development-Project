@@ -5,7 +5,10 @@ public class App {
         AdjacencyGraph adj = Graph();
         adj.PrintGraph();
 
-        System.out.println("All Surpluses: ");
+        System.out.println();
+        adj.printSurplus();
+        System.out.println();
+        adj.printReverseFlow();
     }
 
     public static AdjacencyGraph Graph() {

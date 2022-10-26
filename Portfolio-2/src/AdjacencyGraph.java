@@ -39,11 +39,23 @@ public class AdjacencyGraph {
         }
     }
 
+    public void printSurplus() {
+        for (int i = 0; i < Vertices.size(); i++) {
+            Vertex current = Vertices.get(i);
+
+            System.out.println(current.toString() + "total surplus: "
+                    + (current.getSentContainers() - current.getRecievedContainers()));
+
+        }
+    }
+
 }
 
 class Vertex {
     String name;
     ArrayList<Edge> OutEdge;
+    Integer sContainer = 0;
+    Integer rContainer = 0;
 
     public Vertex(String name) {
         this.name = name;
@@ -52,6 +64,22 @@ class Vertex {
 
     public String toString() {
         return name;
+    }
+
+    public Integer getSentContainers() {
+        return sContainer;
+    }
+
+    public Integer getRecievedContainers() {
+        return rContainer;
+    }
+
+    public void sentContainers(Integer container) {
+        sContainer += container;
+    }
+
+    public void recievedContainers(Integer container) {
+        rContainer += container;
     }
 }
 
@@ -65,6 +93,9 @@ class Edge {
         this.to = to;
         this.weight = weight;
         from.OutEdge.add(this);
+
+        this.from.sentContainers(weight);
+        this.to.recievedContainers(weight);
     }
 
     public String toString() {
