@@ -32,10 +32,11 @@ public class AdjacencyGraph {
 
     public void printGraph() {
         for (int i = 0; i < Vertices.size(); i++) {
-            // System.out.println(" Vertex " + Vertices.get(i).name + " is connecte to: ");
+            System.out.println(" Vertex " + Vertices.get(i).name + " is connecte to: ");
             Vertex current = Vertices.get(i);
             for (Edge e : current.OutEdge) {
-                System.out.println(e.to.name + " with weight: " + e.weight);
+                System.out.print("---> " + e.to.name + " with weight: " + e.weight);
+                System.out.println();
             }
         }
     }
@@ -60,6 +61,10 @@ public class AdjacencyGraph {
         System.out.println(sortedVertices);
     }
 
+    public void Prims() {
+
+    }
+
 }
 
 class Vertex {
@@ -67,6 +72,7 @@ class Vertex {
     ArrayList<Edge> OutEdge;
     Integer sContainer = 0;
     Integer rContainer = 0;
+    Integer weight = Integer.MAX_VALUE;
 
     public Vertex(String name) {
         this.name = name;
@@ -89,11 +95,11 @@ class Vertex {
         return rContainer;
     }
 
-    public void sentContainers(Integer container) {
+    public void setSentContainers(Integer container) {
         sContainer += container;
     }
 
-    public void recievedContainers(Integer container) {
+    public void setRecievedContainers(Integer container) {
         rContainer += container;
     }
 }
@@ -109,8 +115,8 @@ class Edge {
         this.weight = weight;
         from.OutEdge.add(this);
 
-        this.from.sentContainers(weight);
-        this.to.recievedContainers(weight);
+        this.from.setSentContainers(weight);
+        this.to.setRecievedContainers(weight);
     }
 
     public Integer getWeight() {
