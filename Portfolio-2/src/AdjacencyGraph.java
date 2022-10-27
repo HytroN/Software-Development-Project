@@ -2,6 +2,7 @@ import java.util.*;
 
 public class AdjacencyGraph {
     ArrayList<Vertex> Vertices;
+    ArrayList<Integer> sortedVertices = new ArrayList<Integer>();
 
     public AdjacencyGraph() {
         Vertices = new ArrayList<Vertex>();
@@ -29,9 +30,9 @@ public class AdjacencyGraph {
         Edge newE2 = new Edge(to, from, weight);
     }
 
-    public void PrintGraph() {
+    public void printGraph() {
         for (int i = 0; i < Vertices.size(); i++) {
-            System.out.println(" Vertex " + Vertices.get(i).name + " is connecte to: ");
+            // System.out.println(" Vertex " + Vertices.get(i).name + " is connecte to: ");
             Vertex current = Vertices.get(i);
             for (Edge e : current.OutEdge) {
                 System.out.println(e.to.name + " with weight: " + e.weight);
@@ -44,9 +45,19 @@ public class AdjacencyGraph {
             Vertex current = Vertices.get(i);
 
             System.out.println(current.toString() + "total surplus: "
-                    + (current.getSentContainers() - current.getRecievedContainers()));
-
+                    + (current.getRecievedContainers() - current.getSentContainers()));
         }
+    }
+
+    public void sortedVertices() {
+        Vertex current;
+        for (int i = 0; i < Vertices.size(); i++) {
+            current = Vertices.get(i);
+            int surplus = current.getRecievedContainers() - current.getSentContainers();
+            sortedVertices.add(i, surplus);
+        }
+        Collections.sort(sortedVertices);
+        System.out.println(sortedVertices);
     }
 
 }
@@ -64,6 +75,10 @@ class Vertex {
 
     public String toString() {
         return name;
+    }
+
+    public ArrayList<Edge> getOutEdge() {
+        return OutEdge;
     }
 
     public Integer getSentContainers() {
@@ -96,6 +111,10 @@ class Edge {
 
         this.from.sentContainers(weight);
         this.to.recievedContainers(weight);
+    }
+
+    public Integer getWeight() {
+        return weight;
     }
 
     public String toString() {

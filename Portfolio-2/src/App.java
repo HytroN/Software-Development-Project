@@ -3,11 +3,12 @@ import java.util.*;
 public class App {
     public static void main(String[] args) throws Exception {
         AdjacencyGraph adj = Graph();
-        adj.PrintGraph();
+        adj.printGraph();
 
         System.out.println();
         adj.printSurplus();
         System.out.println();
+        adj.sortedVertices();
     }
 
     public static AdjacencyGraph Graph() {
