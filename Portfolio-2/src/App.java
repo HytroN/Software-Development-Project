@@ -10,9 +10,7 @@ public class App {
         adj.printSurplus();
         // System.out.println();
         // adj.sortedVertices();
-        // System.out.println(adj.minimizeFlowCost2());
-        adj.minimizeFlowCost();
-        // adj.sortedVertices();
+        System.out.println("Money saved by using the algorithm: " + (adj.flowPrice() - adj.minimizeFlowCost()));
     }
 
     public static AdjacencyGraph Graph() {
