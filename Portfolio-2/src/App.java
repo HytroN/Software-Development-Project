@@ -6,9 +6,13 @@ public class App {
         adj.printGraph();
 
         System.out.println();
+        // System.out.println(adj.flowPrice());
         adj.printSurplus();
-        System.out.println();
-        adj.sortedVertices();
+        // System.out.println();
+        // adj.sortedVertices();
+        // System.out.println(adj.minimizeFlowCost2());
+        adj.minimizeFlowCost();
+        // adj.sortedVertices();
     }
 
     public static AdjacencyGraph Graph() {

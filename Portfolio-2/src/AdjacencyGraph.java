@@ -45,12 +45,12 @@ public class AdjacencyGraph {
         for (int i = 0; i < Vertices.size(); i++) {
             Vertex current = Vertices.get(i);
 
-            System.out.println(current.toString() + "total surplus: "
+            System.out.println(current.toString() + " total surplus: "
                     + (current.getRecievedContainers() - current.getSentContainers()));
         }
     }
 
-    public void sortedVertices() {
+    public ArrayList<Integer> sortedVertices() {
         Vertex current;
         for (int i = 0; i < Vertices.size(); i++) {
             current = Vertices.get(i);
@@ -58,10 +58,31 @@ public class AdjacencyGraph {
             sortedVertices.add(i, surplus);
         }
         Collections.sort(sortedVertices);
-        System.out.println(sortedVertices);
+        return sortedVertices;
     }
 
-    public void Prims() {
+    public int flowPrice() { // Vi regner prisen ud for hver container i hver port
+        Vertex current;
+        int price = 0;
+        for (int i = 0; i < Vertices.size(); i++) {
+            current = Vertices.get(i);
+            for (int j = 0; j < current.getOutEdge().size(); j++) {
+                Edge currentEdge = current.getOutEdge().get(j);
+                price += currentEdge.getWeight() * 100;
+            }
+        }
+        return price;
+    }
+
+    public int minimizeFlowCost() {
+        ArrayList<Integer> sortedArr = sortedVertices();
+        int sum = 0;
+        for (int i = 0; i < sortedArr.size(); i++) {
+            if (sortedArr.get(i) > 0) {
+                sum += sortedArr.get(i);
+            }
+        }
+        return sum * 100;
 
     }
 
