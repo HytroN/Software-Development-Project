@@ -6,11 +6,11 @@ public class App {
         adj.printGraph();
 
         System.out.println();
-        // System.out.println(adj.flowPrice());
         adj.printSurplus();
-        // System.out.println();
+        System.out.println();
         // adj.sortedVertices();
-        System.out.println("Money saved by using the algorithm: " + (adj.flowPrice() - adj.minimizeFlowCost()));
+        System.out.println("Price of reversing the flow: " + adj.flowPrice());
+        System.out.println("Money saved: " + (adj.flowPrice() - adj.minimizeFlowCost()));
     }
 
     public static AdjacencyGraph Graph() {
