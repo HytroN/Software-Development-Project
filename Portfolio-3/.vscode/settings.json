@@ -1,0 +1,17 @@
+{
+  "java.project.sourcePaths": ["src"],
+  "java.project.outputPath": "bin",
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "c:\\javafx\\lib\\javafx.base.jar",
+    "c:\\javafx\\lib\\javafx.controls.jar",
+    "c:\\javafx\\lib\\javafx.fxml.jar",
+    "c:\\javafx\\lib\\javafx.graphics.jar",
+    "c:\\javafx\\lib\\javafx.media.jar",
+    "c:\\javafx\\lib\\javafx.swing.jar",
+    "c:\\javafx\\lib\\javafx.web.jar",
+    "c:\\javafx\\lib\\javafx-swt.jar",
+    "c:\\Users\\Charl\\Downloads\\sqlite-jdbc-3.39.3.0.jar"
+  ],
+  "cSpell.words": ["hbox"]
+}
