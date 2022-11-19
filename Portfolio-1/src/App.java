@@ -1,13 +1,17 @@
+import java.util.ArrayList;
+
 public class App {
     public static void main(String[] args) throws Exception {
         System.out.println(" ");
         System.out.println("############################################");
-        System.out.println("#################  RoRo  ###################");
+        System.out.println("################# RoRo ###################");
         System.out.println("############################################");
         System.out.println(" ");
-        RoRo b = new RoRo("DK", 10, 220, 20);
+        RoRo b = new RoRo("DK", 10, 400, 20, 200);
         System.out.println(b.checkCargo());
-        b.loadingCargo(10, 5);
+        b.loadingCargo(2, 2);
+        b.loadingCargo(2, 2);
+        b.loadingCargo(2, 1);
         System.out.println(b.checkLoad());
         System.out.println(b.utilityLevelOfCapacity());
 
@@ -19,7 +23,9 @@ public class App {
         // Containers k = new Containers("DE", 10, 200, 30, 10);
         // System.err.println(k.checkCargo());
         // System.out.println(k.amountOfContainers);
-        // k.loadingCargo(10);
+        // k.loadingCargo(2);
+        // k.loadingCargo(2);
+        // k.loadingCargo(7);
         // System.out.println(k.amountOfContainers);
         // System.out.println(k.utilityLevelOfCapacity());
         // System.out.println(k.checkLoad());
@@ -38,18 +44,23 @@ public class App {
     }
 }
 
-class Vessels {
-    String vesselType, flagNation;
+abstract class Vessels {
+    String flagNation;
     int draft, length, width, cargo;
 
-    public void Vessel(String flagNation, String vesselType, int draft, int length, int width, int cargo) {
+    public Vessels(String flagNation, int draft, int length, int width, int cargo) {
         this.flagNation = flagNation;
-        this.vesselType = vesselType;
         this.draft = draft;
         this.length = length;
         this.width = width;
         this.cargo = cargo;
     }
+
+    public abstract String checkCargo();
+
+    public abstract String checkLoad();
+
+    public abstract double utilityLevelOfCapacity();
 }
 
 class RoRo extends Vessels {
@@ -58,75 +69,78 @@ class RoRo extends Vessels {
     int totalCarsLength, totalTruckLength;
     double fraction;
 
-    public RoRo(String flagNation, int draft, int length, int width) {
-        super.flagNation = flagNation;
-        super.vesselType = RoRo.class.getName();
-        super.draft = draft;
-        super.length = length;
-        super.width = width;
-        // super(flagNation, Tankers.class.getClass(), draft, length, width);
+    public RoRo(String flagNation, int draft, int length, int width, int cargo) {
+        super(flagNation, draft, length, width, cargo);
     }
 
     public String checkCargo() {
-        return "Flag Nation: " + flagNation + " | Vessel Type: " + vesselType + " | draft: " + draft
+        return "Flag Nation: " + flagNation + " | draft: " + draft
                 + " | length: " + length + " | width: " + width;
     }
 
     public String checkLoad() {
-        return (totalCarsLength + totalTruckLength) + "/" + length;
+        return (totalCarsLength + totalTruckLength) + "/" + cargo;
     }
 
-    public void loadingCargo(int totalCarsLength, int totalTruckLength) {
-        if ((totalCarsLength * carLength) + (totalTruckLength * truckLength) <= length) {
-            this.totalCarsLength = totalCarsLength * carLength;
-            this.totalTruckLength = totalTruckLength * truckLength;
+    public void loadingCargo(int addedCars, int addedTrucks) {
+        if (addedCars <= 0 && addedTrucks <= 0) {
+            return;
+        }
+        if (cargo >= (this.totalCarsLength + (addedCars * carLength))
+                + (this.totalTruckLength + (addedTrucks * truckLength))) {
+            this.totalCarsLength += addedCars * carLength;
+            this.totalTruckLength += addedTrucks * truckLength;
         } else {
-            System.out.println("There is not space for that!");
+            return;
         }
     }
 
-    public double utilityLevelOfCapacity() { // En måde at udregne vores fraction af båden
-        double length2 = length;
-        this.fraction = ((this.totalCarsLength + this.totalTruckLength) / length2) * 100.0;
+    public double utilityLevelOfCapacity() {
+        double cargo2 = cargo;
+        this.fraction = ((this.totalCarsLength + this.totalTruckLength) / cargo2) * 100.0;
         return fraction;
     }
 }
 
 class Tankers extends Vessels {
-    int compartments, loadCargo;
+    ArrayList<Integer> compartments = new ArrayList<Integer>();
+    int loadCargo;
     double fraction;
 
-    public Tankers(String flagNation, int draft, int length, int width, int cargo, int compartments) {
-        super.flagNation = flagNation;
-        super.vesselType = Tankers.class.getName();
-        super.draft = draft;
-        super.length = length;
-        super.width = width;
-        super.cargo = cargo;
-        this.compartments = compartments;
+    public Tankers(String flagNation, int draft, int length, int width, int cargo) {
+        super(flagNation, draft, length, width, cargo);
     }
 
     public String checkCargo() {
-        return "Flag Nation: " + flagNation + " | Vessel Type: " + vesselType + " | draft: " + draft
+        return "Flag Nation: " + flagNation + " | draft: " + draft
                 + " | length: " + length + " | width: " + width + " | Cargo: " + cargo + " | Amount of compartments: "
                 + compartments;
     }
 
     public String checkLoad() {
-        return "Loaded Cargo: " + loadCargo + "/" + (cargo * compartments);
+        return "Loaded Cargo: " + loadCargo + "/" + (cargo);
     }
 
     void loadingCargo(int loadCargo) {
-        if (utilityLevelOfCapacity() < 100.0 && loadCargo <= (cargo * compartments)) {
-            this.loadCargo = loadCargo;
-        } else {
-            System.out.println("There is not space for that!");
-        }
+        /*
+         * I har ikke styr på hvilket compartment man er i og hvis loading cargo bliver
+         * kaldt flere gange så bliver loadCargo
+         * bare til den nyeste værdi der er givet og hvad enten der var før går tabt.
+         * Hvis i havde en liste af compartments så kunne i sige hvilket compartment man
+         * tilføjer til og i kunne sætte et
+         * max for hvor meget der kunne være i et compartment.
+         */
+        // if (utilityLevelOfCapacity() < 100.0 && loadCargo <= (cargo * compartments))
+        // {
+        // this.loadCargo = loadCargo;
+        // } else {
+        // System.out.println("There is not space for that!");
+        // }
     }
 
     public double utilityLevelOfCapacity() {
         double loadCargo = this.loadCargo;
-        this.fraction = (loadCargo / (cargo * compartments)) * 100.0;
+        // this.fraction = (loadCargo / (cargo * compartments)) * 100.0;
         return fraction;
     }
 }
@@ -136,34 +150,29 @@ class Containers extends Vessels {
     double fraction;
 
     public Containers(String flagNation, int draft, int length, int width, int cargo) {
-        super.flagNation = flagNation;
-        super.vesselType = Containers.class.getName();
-        super.draft = draft;
-        super.length = length;
-        super.width = width;
-        super.cargo = cargo;
+        super(flagNation, draft, length, width, cargo);
     }
 
     public String checkLoad() {
-        return amountOfContainers + "/" + cargo;
+        return "Containers amount: " + amountOfContainers;
     }
 
     public String checkCargo() {
-        return "Flag Nation: " + flagNation + " | Vessel Type: " + vesselType + " | draft: " + draft
+        return "Flag Nation: " + flagNation + " | draft: " + draft
                 + " | length: " + length + " | width: " + width + " | Cargo: " + cargo;
     }
 
     void loadingCargo(int amountOfContainers) {
-        if (cargo >= amountOfContainers) {
-            this.amountOfContainers = amountOfContainers;
+        if (cargo >= this.amountOfContainers + amountOfContainers) {
+            this.amountOfContainers += amountOfContainers;
         } else {
             System.out.println("There is no more space!");
         }
     }
 
-    String utilityLevelOfCapacity() {
+    public double utilityLevelOfCapacity() {
         double amountOfContainers = this.amountOfContainers;
         this.fraction = (amountOfContainers / cargo) * 100.0;
-        return "Amount of space that are filled: " + fraction;
+        return fraction;
     }
 }
