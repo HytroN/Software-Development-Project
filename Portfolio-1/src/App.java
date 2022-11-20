@@ -1,19 +1,21 @@
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println(" ");
-        System.out.println("############################################");
-        System.out.println("################# RoRo ###################");
-        System.out.println("############################################");
-        System.out.println(" ");
-        RoRo b = new RoRo("DK", 10, 400, 20, 200);
-        System.out.println(b.checkCargo());
-        b.loadingCargo(2, 2);
-        b.loadingCargo(2, 2);
-        b.loadingCargo(2, 1);
-        System.out.println(b.checkLoad());
-        System.out.println(b.utilityLevelOfCapacity());
+        // System.out.println(" ");
+        // System.out.println("############################################");
+        // System.out.println("################# RoRo ###################");
+        // System.out.println("############################################");
+        // System.out.println(" ");
+        // RoRo b = new RoRo("DK", 10, 400, 20, 200);
+        // System.out.println(b.checkCargo());
+        // b.loadingCargo(2, 2);
+        // b.loadingCargo(2, 2);
+        // b.loadingCargo(2, 1);
+        // System.out.println(b.checkLoad());
+        // System.out.println(b.utilityLevelOfCapacity());
 
         // System.out.println(" ");
         // System.out.println("############################################");
@@ -22,25 +24,24 @@ public class App {
         // System.out.println(" ");
         // Containers k = new Containers("DE", 10, 200, 30, 10);
         // System.err.println(k.checkCargo());
-        // System.out.println(k.amountOfContainers);
         // k.loadingCargo(2);
         // k.loadingCargo(2);
         // k.loadingCargo(7);
-        // System.out.println(k.amountOfContainers);
         // System.out.println(k.utilityLevelOfCapacity());
         // System.out.println(k.checkLoad());
 
-        // System.out.println(" ");
-        // System.out.println("############################################");
-        // System.out.println("################# Tankers ################");
-        // System.out.println("############################################");
-        // System.out.println(" ");
+        System.out.println(" ");
+        System.out.println("############################################");
+        System.out.println("################# Tankers ################");
+        System.out.println("############################################");
+        System.out.println(" ");
 
-        // Tankers c = new Tankers("DE", 10, 200, 30, 10, 5);
+        Tankers c = new Tankers("DE", 10, 200, 30, 10);
+        c.addCompartments(10);
         // System.out.println(c.checkCargo());
-        // c.loadingCargo(50);
-        // System.out.println(c.checkLoad());
-        // System.out.println(c.utilityLevelOfCapacity());
+        c.loadingCargo(5);
+        System.out.println(c.checkLoad());
+        System.out.println(c.utilityLevelOfCapacity());
     }
 }
 
@@ -103,7 +104,8 @@ class RoRo extends Vessels {
 }
 
 class Tankers extends Vessels {
-    ArrayList<Integer> compartments = new ArrayList<Integer>();
+    // Map<Integer, Integer> compartments = new HashMap<>();
+    List<Map<String,Object>
     int loadCargo;
     double fraction;
 
@@ -121,7 +123,20 @@ class Tankers extends Vessels {
         return "Loaded Cargo: " + loadCargo + "/" + (cargo);
     }
 
+    public void addCompartments(int amountOfCompartments) {
+        for (int i = 0; i < amountOfCompartments; i++) {
+            compartments.put(i, 0);
+        }
+        System.out.println(compartments);
+    }
+
     void loadingCargo(int loadCargo) {
+        compartments.forEach((k, v) -> {
+            if (compartments.get(k) < cargo) {
+                compartments.put(k, loadCargo);
+            }
+        });
+        System.out.println(compartments);
         /*
          * I har ikke styr på hvilket compartment man er i og hvis loading cargo bliver
          * kaldt flere gange så bliver loadCargo
@@ -164,9 +179,11 @@ class Containers extends Vessels {
 
     void loadingCargo(int amountOfContainers) {
         if (cargo >= this.amountOfContainers + amountOfContainers) {
+            System.out.println("Added " + amountOfContainers + " Containers");
             this.amountOfContainers += amountOfContainers;
         } else {
-            System.out.println("There is no more space!");
+            System.out.println("There is no space for " + amountOfContainers + " containers. There is only space for "
+                    + (cargo - this.amountOfContainers) + " more");
         }
     }
 
