@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,13 +37,15 @@ public class App {
         System.out.println("############################################");
         System.out.println(" ");
 
-        Tankers c = new Tankers("DE", 10, 200, 30, 10);
-        c.setCompartment(10);
+        Tankers c = new Tankers("DE", 10, 200, 30, 20);
+        c.setCompartmentSize(10);
         System.out.println(c.checkCargo());
-        c.loadingCargo(5);
-        c.loadingCargo(5);
-        System.out.println(c.checkLoad());
-        System.out.println(c.utilityLevelOfCapacity());
+        c.loadingCargo(0, 8);
+        c.loadingCargo(1, 13);
+        c.loadingCargo(5, 16);
+        System.out.println("Total sum of containers: " + c.sumOfContainers());
+        System.out.println("List of compartments: " + c.checkLoad());
+        System.out.println("Fraction: " + c.utilityLevelOfCapacity());
     }
 }
 
@@ -105,7 +108,7 @@ class RoRo extends Vessels {
 }
 
 class Tankers extends Vessels {
-    Map<Integer, Integer> compartments = new HashMap<>();
+    int[] compartment;
     int loadCargo, amountOfCompartments;
     double fraction;
 
@@ -113,55 +116,45 @@ class Tankers extends Vessels {
         super(flagNation, draft, length, width, cargo);
     }
 
-    public void setCompartment(int amountOfCompartments) {
-        if (compartments.size() == 0) {
-            for (int i = 0; i < amountOfCompartments; i++) {
-                compartments.put(i, 0);
-            }
-        }
-    }
-
     public String checkCargo() {
         return "Flag Nation: " + flagNation + " | draft: " + draft
-                + " | length: " + length + " | width: " + width + " | Cargo: " + cargo + " | Amount of compartments: ";
+                + " | length: " + length + " | width: " + width + " | Cargo: " + cargo + " | Amount of compartments: "
+                + compartment.length;
     }
 
     public String checkLoad() {
-        return "Loaded Cargo: " + loadCargo + "/" + (cargo);
+        return "Load on each compartment: " + Arrays.toString(compartment);
     }
 
-    void loadingCargo(int loadCargo) {
-        for (int i = 0; i < compartments.size(); i++) {
-            if (compartments.get(i) == 10) {
-                break;
-            }
-            if (cargo > compartments.get(i)) {
-                this.loadCargo += loadCargo;
-                compartments.put(i, this.cargo);
-                break;
-            }
-        }
-        System.out.println(compartments);
+    public void setCompartmentSize(int size) {
+        compartment = new int[size];
+    }
 
-        /*
-         * I har ikke styr på hvilket compartment man er i og hvis loading cargo bliver
-         * kaldt flere gange så bliver loadCargo
-         * bare til den nyeste værdi der er givet og hvad enten der var før går tabt.
-         * Hvis i havde en liste af compartments så kunne i sige hvilket compartment man
-         * tilføjer til og i kunne sætte et
-         * max for hvor meget der kunne være i et compartment.
-         */
-        // if (utilityLevelOfCapacity() < 100.0 && loadCargo <= (cargo * compartments))
-        // {
-        // this.loadCargo = loadCargo;
-        // } else {
-        // System.out.println("There is not space for that!");
-        // }
+    public double sumOfContainers() {
+        int sum = 0;
+        int i;
+
+        // Iterate through all elements and add them to sum
+        for (i = 0; i < compartment.length; i++)
+            sum += compartment[i];
+
+        return sum;
+    }
+
+    void loadingCargo(int compartmentId, int loadCargo) {
+        if (compartment[compartmentId] + loadCargo > cargo) {
+            System.out.println("Cant add this amount of containers to this compartment! Please remove "
+                    + ((compartment[compartmentId] + loadCargo) - cargo));
+            return;
+        }
+        if (cargo >= compartment[compartmentId] + loadCargo) {
+            compartment[compartmentId] += loadCargo;
+        }
+
     }
 
     public double utilityLevelOfCapacity() {
-        double loadCargo = this.loadCargo;
-        // this.fraction = (loadCargo / (cargo * compartments)) * 100.0;
+        double fraction = (sumOfContainers() / (compartment.length * cargo)) * 100.0;
         return fraction;
     }
 }

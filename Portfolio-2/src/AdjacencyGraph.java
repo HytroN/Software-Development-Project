@@ -94,7 +94,7 @@ public class AdjacencyGraph {
                 VerticesSurplus.set(i, VS - (-VL));
                 VerticesLack.set(j, 0);
 
-                System.out.println(VSName + " sent " + (-VL) + " comtainer to " + VLName);
+                System.out.println(VSName + " sent " + (-VL) + " container to " + VLName);
                 j++;
 
                 if (i == VerticesSurplus.size() - 1 && VerticesSurplus.get(i) == 0)
@@ -104,7 +104,7 @@ public class AdjacencyGraph {
                 VerticesLack.set(j, VL + VS);
                 VerticesSurplus.set(i, 0);
 
-                System.out.println(VSName + " sent " + VS + " comtainer to " + VLName);
+                System.out.println(VSName + " sent " + VS + " container to " + VLName);
                 i++;
 
             }
