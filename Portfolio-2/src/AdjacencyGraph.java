@@ -36,7 +36,7 @@ public class AdjacencyGraph {
 
     public void printGraph() {
         for (int i = 0; i < Vertices.size(); i++) {
-            System.out.println(" Vertex " + Vertices.get(i).name + " is connecte to: ");
+            System.out.println(" Vertex " + Vertices.get(i).name + " is connected to: ");
             Vertex current = Vertices.get(i);
             for (Edge e : current.OutEdge) {
                 System.out.print("---> " + e.to.name + " with weight: " + e.weight);
@@ -82,34 +82,31 @@ public class AdjacencyGraph {
         // System.out.println(VerticesLack);
         int i = 0;
         int j = 0;
-        while (true) {
+        while (i < VerticesSurplus.size()) {
+            String VSName = VerticesSurplusNames.get(i);
+            String VLName = VerticesLackNames.get(j);
 
-            if (i < VerticesSurplus.size()) {
-                String VSName = VerticesSurplusNames.get(i);
-                String VLName = VerticesLackNames.get(j);
+            int VS = VerticesSurplus.get(i);
+            int VL = VerticesLack.get(j);
 
-                int VS = VerticesSurplus.get(i);
-                int VL = VerticesLack.get(j);
+            if (VS >= (-VL)) {
 
-                if (VS >= (-VL)) {
+                VerticesSurplus.set(i, VS - (-VL));
+                VerticesLack.set(j, 0);
 
-                    VerticesSurplus.set(i, VS - (-VL));
-                    VerticesLack.set(j, 0);
+                System.out.println(VSName + " sent " + (-VL) + " comtainer to " + VLName);
+                j++;
 
-                    System.out.println(VSName + " sent " + (-VL) + " comtainer to " + VLName);
-                    j++;
+                if (i == VerticesSurplus.size() - 1 && VerticesSurplus.get(i) == 0)
+                    break;
 
-                    if (i == VerticesSurplus.size() - 1 && VerticesSurplus.get(i) == 0)
-                        break;
+            } else {
+                VerticesLack.set(j, VL + VS);
+                VerticesSurplus.set(i, 0);
 
-                } else {
-                    VerticesLack.set(j, VL + VS);
-                    VerticesSurplus.set(i, 0);
+                System.out.println(VSName + " sent " + VS + " comtainer to " + VLName);
+                i++;
 
-                    System.out.println(VSName + " sent " + VS + " comtainer to " + VLName);
-                    i++;
-
-                }
             }
         }
     }

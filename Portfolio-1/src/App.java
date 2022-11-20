@@ -105,7 +105,6 @@ class RoRo extends Vessels {
 
 class Tankers extends Vessels {
     // Map<Integer, Integer> compartments = new HashMap<>();
-    List<Map<String,Object>
     int loadCargo;
     double fraction;
 
