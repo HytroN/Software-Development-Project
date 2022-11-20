@@ -61,9 +61,6 @@ public class AdjacencyGraph {
 
         ArrayList<String> VerticesLackNames = new ArrayList<>();
         ArrayList<Integer> VerticesLack = new ArrayList<>();
-
-        // HashMap<String,Integer> VerticesSurplas = new HashMap<>();
-        // HashMap<String,Integer> VerticesLack = new HashMap<>();
         Vertices.forEach(vertex -> {
             int diff = vertex.getRecievedContainers() - vertex.getSentContainers();
             if (diff > 0) {
@@ -74,12 +71,7 @@ public class AdjacencyGraph {
                 VerticesLack.add(diff);
             }
 
-        });
-        // System.out.println(VerticesSurplasNames);
-        // System.out.println(VerticesSurplas);
-
-        // System.out.println(VerticesLackNames);
-        // System.out.println(VerticesLack);
+        }); 
         int i = 0;
         int j = 0;
         while (i < VerticesSurplus.size()) {
