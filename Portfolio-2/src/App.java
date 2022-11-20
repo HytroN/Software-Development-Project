@@ -3,7 +3,9 @@ import java.util.*;
 public class App {
     public static void main(String[] args) throws Exception {
         AdjacencyGraph adj = Graph();
-        adj.printGraph();
+        adj.k();
+        // adj.printGraph();
+        System.out.println("price of the 12 places where the containers flow " + adj.getFlowPrice());
 
         System.out.println();
         adj.printSurplus();

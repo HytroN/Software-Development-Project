@@ -4,6 +4,8 @@ public class AdjacencyGraph {
     ArrayList<Vertex> Vertices;
     ArrayList<Integer> sortedVertices = new ArrayList<Integer>();
 
+    int movedContainer = 0;
+
     public AdjacencyGraph() {
         Vertices = new ArrayList<Vertex>();
     }
@@ -18,6 +20,8 @@ public class AdjacencyGraph {
             return;
         }
         Edge newE = new Edge(from, to, weight);
+
+        movedContainer += weight;
 
     }
 
@@ -50,6 +54,66 @@ public class AdjacencyGraph {
         }
     }
 
+    public void k() {
+
+        ArrayList<String> VerticesSurplusNames = new ArrayList<>();
+        ArrayList<Integer> VerticesSurplus = new ArrayList<>();
+
+        ArrayList<String> VerticesLackNames = new ArrayList<>();
+        ArrayList<Integer> VerticesLack = new ArrayList<>();
+
+        // HashMap<String,Integer> VerticesSurplas = new HashMap<>();
+        // HashMap<String,Integer> VerticesLack = new HashMap<>();
+        Vertices.forEach(vertex -> {
+            int diff = vertex.getRecievedContainers() - vertex.getSentContainers();
+            if (diff > 0) {
+                VerticesSurplusNames.add(vertex.name);
+                VerticesSurplus.add(diff);
+            } else {
+                VerticesLackNames.add(vertex.name);
+                VerticesLack.add(diff);
+            }
+
+        });
+        // System.out.println(VerticesSurplasNames);
+        // System.out.println(VerticesSurplas);
+
+        // System.out.println(VerticesLackNames);
+        // System.out.println(VerticesLack);
+        int i = 0;
+        int j = 0;
+        while (true) {
+
+            if (i < VerticesSurplus.size()) {
+                String VSName = VerticesSurplusNames.get(i);
+                String VLName = VerticesLackNames.get(j);
+
+                int VS = VerticesSurplus.get(i);
+                int VL = VerticesLack.get(j);
+
+                if (VS >= (-VL)) {
+
+                    VerticesSurplus.set(i, VS - (-VL));
+                    VerticesLack.set(j, 0);
+
+                    System.out.println(VSName + " sent " + (-VL) + " comtainer to " + VLName);
+                    j++;
+
+                    if (i == VerticesSurplus.size() - 1 && VerticesSurplus.get(i) == 0)
+                        break;
+
+                } else {
+                    VerticesLack.set(j, VL + VS);
+                    VerticesSurplus.set(i, 0);
+
+                    System.out.println(VSName + " sent " + VS + " comtainer to " + VLName);
+                    i++;
+
+                }
+            }
+        }
+    }
+
     public ArrayList<Integer> sortedVertices() {
         Vertex current;
         for (int i = 0; i < Vertices.size(); i++) {
@@ -59,6 +123,11 @@ public class AdjacencyGraph {
         }
         Collections.sort(sortedVertices);
         return sortedVertices;
+    }
+
+    public int getFlowPrice() { // denne funktion returne den samlede pris for at returne skibene til de havene
+                                // som den kom fra og på samme måde som da man sendte den
+        return movedContainer * 100;
     }
 
     public int flowPrice() { // Vi regner prisen ud for hver container i hver port
