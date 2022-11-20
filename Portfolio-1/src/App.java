@@ -37,8 +37,9 @@ public class App {
         System.out.println(" ");
 
         Tankers c = new Tankers("DE", 10, 200, 30, 10);
-        c.addCompartments(10);
-        // System.out.println(c.checkCargo());
+        c.setCompartment(10);
+        System.out.println(c.checkCargo());
+        c.loadingCargo(5);
         c.loadingCargo(5);
         System.out.println(c.checkLoad());
         System.out.println(c.utilityLevelOfCapacity());
@@ -104,38 +105,44 @@ class RoRo extends Vessels {
 }
 
 class Tankers extends Vessels {
-    // Map<Integer, Integer> compartments = new HashMap<>();
-    int loadCargo;
+    Map<Integer, Integer> compartments = new HashMap<>();
+    int loadCargo, amountOfCompartments;
     double fraction;
 
     public Tankers(String flagNation, int draft, int length, int width, int cargo) {
         super(flagNation, draft, length, width, cargo);
     }
 
+    public void setCompartment(int amountOfCompartments) {
+        if (compartments.size() == 0) {
+            for (int i = 0; i < amountOfCompartments; i++) {
+                compartments.put(i, 0);
+            }
+        }
+    }
+
     public String checkCargo() {
         return "Flag Nation: " + flagNation + " | draft: " + draft
-                + " | length: " + length + " | width: " + width + " | Cargo: " + cargo + " | Amount of compartments: "
-                + compartments;
+                + " | length: " + length + " | width: " + width + " | Cargo: " + cargo + " | Amount of compartments: ";
     }
 
     public String checkLoad() {
         return "Loaded Cargo: " + loadCargo + "/" + (cargo);
     }
 
-    public void addCompartments(int amountOfCompartments) {
-        for (int i = 0; i < amountOfCompartments; i++) {
-            compartments.put(i, 0);
+    void loadingCargo(int loadCargo) {
+        for (int i = 0; i < compartments.size(); i++) {
+            if (compartments.get(i) == 10) {
+                break;
+            }
+            if (cargo > compartments.get(i)) {
+                this.loadCargo += loadCargo;
+                compartments.put(i, this.cargo);
+                break;
+            }
         }
         System.out.println(compartments);
-    }
 
-    void loadingCargo(int loadCargo) {
-        compartments.forEach((k, v) -> {
-            if (compartments.get(k) < cargo) {
-                compartments.put(k, loadCargo);
-            }
-        });
-        System.out.println(compartments);
         /*
          * I har ikke styr på hvilket compartment man er i og hvis loading cargo bliver
          * kaldt flere gange så bliver loadCargo
